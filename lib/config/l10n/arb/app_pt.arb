@@ -1,0 +1,67 @@
+{  
+    "@@locale": "pt",
+    "appName": "The Dartboard",
+    "@appName": {
+    "description": "The application name"
+  },
+  "balloonIn": "Balloon in",
+  "@balloonIn": {
+    "description": "Balloon in"
+  },
+  "theSky": "the sky",
+  "@theSky": {
+    "description": "the sky"
+  },
+  "play": "Jogar",
+  "@play": {
+    "description": "Jogar"
+  },
+  "theme": "tema",
+  "@theme": {
+    "description": "theme"
+  },
+  "sound": "Som",
+  "@sound": {
+    "description": "sound"
+  },
+  "vibration": "vibracao",
+  "@vibration": {
+    "description": "vibration"
+  },
+  "language": "Idioma",
+  "@language": {
+    "description": "language"
+  },
+  "select": "Selecione",
+  "@select": {
+    "description": "select"
+  },
+  "statistics": "Statistics",
+  "@statistics": {
+    "description": "statistics"
+  },
+  "on": "On",
+  "@on": {
+    "description": "on"
+  },
+  "off": "Off",
+  "@off": {
+    "description": "off"
+  },
+  "english": "English",
+  "@english": {
+    "description": "english"
+  },
+  "portuguese": "Portuguese",
+  "@portuguese": {
+    "description": "portuguese"
+  },
+  "russian": "Russian",
+  "@russian": {
+    "description": "russian"
+  },
+  "settings": "ajustes",
+  "@settings": {
+    "description": "Settings"
+  }
+}

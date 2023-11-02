@@ -1,0 +1,67 @@
+{
+    "@@locale": "ru",
+    "appName": "The Dartboard",
+    "@appName": {
+    "description": "The application name"
+  },
+  "balloonIn": "Balloon in",
+  "@balloonIn": {
+    "description": "Balloon in"
+  },
+  "theSky": "the sky",
+  "@theSky": {
+    "description": "the sky"
+  },
+  "play": "Играть",
+  "@play": {
+    "description": "Играть"
+  },
+  "theme": "tema",
+  "@theme": {
+    "description": "theme"
+  },
+  "sound": "звук",
+  "@sound": {
+    "description": "sound"
+  },
+  "vibration": "ВИБРАЦИЯ",
+  "@vibration": {
+    "description": "vibration"
+  },
+  "language": "ВИБРАЦИЯ",
+  "@language": {
+    "description": "language"
+  },
+  "select": "ВИБРАЦИЯ",
+  "@select": {
+    "description": "select"
+  },
+  "statistics": "СТАТИСТИКА",
+  "@statistics": {
+    "description": "statistics"
+  },
+  "on": "On",
+  "@on": {
+    "description": "on"
+  },
+  "off": "Off",
+  "@off": {
+    "description": "off"
+  },
+  "english": "English",
+  "@english": {
+    "description": "english"
+  },
+  "portuguese": "Portuguese",
+  "@portuguese": {
+    "description": "portuguese"
+  },
+  "russian": "Russian",
+  "@russian": {
+    "description": "russian"
+  },
+  "settings": "НАСТРОЙКИ",
+  "@settings": {
+    "description": "Settings"
+  }
+}
