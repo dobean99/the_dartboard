@@ -7,7 +7,10 @@ class AppColors {
   static const Color doveGrey = Color(0xFF6d6d6d);
   static const Color blackColor = Colors.black;
   static const Color whiteColor = Colors.white;
+  static const Color blackShader = Colors.black26;
+
   static const Color bgButtonColor = Color(0xFF532020);
+  static const Color textTitleColor = Color(0xFFFFA91F);
 
   static const Color lightTextColor = Color.fromRGBO(122, 134, 154, 1);
 

@@ -6,6 +6,9 @@ class PngAssets {
   static String get statisticsIcon => 'statistics_icon'.png;
   static String get playIcon => 'play_icon'.png;
   static String get settingsIcon => 'settings_icon'.png;
+  static String get musicIcon => 'music_icon'.png;
+  static String get volumeIcon => 'volume_icon'.png;
+  static String get usaIcon => 'usa'.png;
 
 //get only file name .png ==> example "blue_ballon.png"
   static String get background => 'background_image'.src;

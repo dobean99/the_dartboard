@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:the_dartboard/config/assets/png_assets.dart';
 import 'package:the_dartboard/screens/game_play.dart';
 import 'package:the_dartboard/screens/settings_screen.dart';
+import 'package:the_dartboard/screens/statistics_screen.dart';
 import 'package:the_dartboard/widgets/commons/base_layout.dart';
 import 'package:the_dartboard/widgets/commons/circle_stroke_button.dart';
 
@@ -50,13 +51,11 @@ class MainMenu extends StatelessWidget {
               ),
               CircleStrokeButton(
                   onPressed: () {
-                    // Push and replace current screen (i.e MainMenu) with
-                    // SelectSpaceship(), so that player can select a spaceship.
-                    // Navigator.of(context).pushReplacement(
-                    //   MaterialPageRoute(
-                    //     builder: (context) => const SelectSpaceship(),
-                    //   ),
-                    // );
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (context) => const StatisticsScreen(),
+                      ),
+                    );
                   },
                   child: Image.asset(PngAssets.statisticsIcon)),
             ],
