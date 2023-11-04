@@ -16,6 +16,42 @@
   "@play": {
     "description": "Играть"
   },
+  "pause": "ПАУЗА",
+  "@pause": {
+    "description": "Pause"
+  },
+  "youWin": "ВЫИГРЫШ!",
+  "@youWin": {
+    "description": "You win!"
+  },
+  "youLose": "ПРОИГРЫШ!",
+  "@youWin": {
+    "description": "You lose!"
+  },
+  "win": "Победы",
+  "@win": {
+    "description": "win"
+  },
+  "lose": "Проигрыш",
+  "@lose": {
+    "description": "lose"
+  },
+    "player": "Игрок",
+  "@player": {
+    "description": "player"
+  },
+  "computer": "ПК",
+  "@computer": {
+    "description": "Computer"
+  },
+  "rounds": "Раунд",
+  "@rounds": {
+    "description": "Rounds"
+  },
+  "points": "Очки",
+  "@points": {
+    "description": "Points"
+  },
   "theme": "tema",
   "@theme": {
     "description": "theme"

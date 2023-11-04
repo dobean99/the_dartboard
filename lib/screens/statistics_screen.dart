@@ -12,38 +12,36 @@ class StatisticsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BaseLayout(
-      child: Expanded(
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            Column(
-              children: [
-                TitleScreen(
-                  text: context.l10n!.statistics,
-                ),
-                Container(
-                  decoration: BoxDecoration(),
-                )
-              ],
-            ),
-            Positioned(
-              bottom: 0,
-              right: 0,
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 15.0, right: 30),
-                child: CircleStrokeButton(
-                  width: 54,
-                  onPressed: () {
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (context) => const MainMenu(),
-                    ));
-                  },
-                  child: Image.asset(PngAssets.homeIcon),
-                ),
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          Column(
+            children: [
+              TitleScreen(
+                text: context.l10n!.statistics,
+              ),
+              Container(
+                decoration: BoxDecoration(),
+              )
+            ],
+          ),
+          Positioned(
+            bottom: 0,
+            right: 0,
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 15.0, right: 30),
+              child: CircleStrokeButton(
+                width: 54,
+                onPressed: () {
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    builder: (context) => const MainMenu(),
+                  ));
+                },
+                child: Image.asset(PngAssets.homeIcon),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

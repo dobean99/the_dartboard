@@ -16,6 +16,42 @@
   "@play": {
     "description": "Jogar"
   },
+  "pause": "Pausa",
+  "@pause": {
+    "description": "Pause"
+  },
+  "youWin": "VOCÊ GANHOU!",
+  "@youWin": {
+    "description": "You win!"
+  },
+  "youLose": "VOCÊ PERDEU!",
+  "@youWin": {
+    "description": "You lose!"
+  },
+  "win": "Ganhar",
+  "@win": {
+    "description": "win"
+  },
+  "lose": "Perder",
+  "@lose": {
+    "description": "lose"
+  },
+  "player": "Player",
+  "@player": {
+    "description": "player"
+  },
+  "computer": "Computer",
+  "@computer": {
+    "description": "Computer"
+  },
+  "rounds": "Rodadas",
+  "@rounds": {
+    "description": "Rounds"
+  },
+  "points": "Pontos",
+  "@points": {
+    "description": "Points"
+  },
   "theme": "tema",
   "@theme": {
     "description": "theme"

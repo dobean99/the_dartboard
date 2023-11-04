@@ -2,6 +2,10 @@ import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:the_dartboard/config/assets/png_assets.dart';
 import 'package:the_dartboard/game/the_dartboard.dart';
+import 'package:the_dartboard/widgets/overlays/game_over_menu.dart';
+import 'package:the_dartboard/widgets/overlays/home_button.dart';
+import 'package:the_dartboard/widgets/overlays/pause_button.dart';
+import 'package:the_dartboard/widgets/overlays/pause_menu.dart';
 
 TheDartboard _theDartboard = TheDartboard();
 
@@ -42,21 +46,25 @@ class GamePlay extends StatelessWidget {
           },
           game: _theDartboard,
           // Initially only pause button overlay will be visible.
-          // initialActiveOverlays: const [PauseButton.id],
-          // overlayBuilderMap: {
-          //   PauseButton.id: (BuildContext context, SpacescapeGame game) =>
-          //       PauseButton(
-          //         game: game,
-          //       ),
-          //   PauseMenu.id: (BuildContext context, SpacescapeGame game) =>
-          //       PauseMenu(
-          //         game: game,
-          //       ),
-          //   GameOverMenu.id: (BuildContext context, SpacescapeGame game) =>
-          //       GameOverMenu(
-          //         game: game,
-          //       ),
-          // },
+          initialActiveOverlays: const [HomeButton.id, PauseButton.id],
+          overlayBuilderMap: {
+            HomeButton.id: (BuildContext context, TheDartboard game) =>
+                HomeButton(
+                  game: game,
+                ),
+            PauseButton.id: (BuildContext context, TheDartboard game) =>
+                PauseButton(
+                  game: game,
+                ),
+            PauseMenu.id: (BuildContext context, TheDartboard game) =>
+                PauseMenu(
+                  game: game,
+                ),
+            GameOverMenu.id: (BuildContext context, TheDartboard game) =>
+                GameOverMenu(
+                  game: game,
+                ),
+          },
         ),
       ),
     );

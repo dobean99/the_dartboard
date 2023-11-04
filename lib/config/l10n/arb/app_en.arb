@@ -16,6 +16,42 @@
   "@play": {
     "description": "play"
   },
+  "pause": "Pause",
+  "@pause": {
+    "description": "Pause"
+  },
+  "youWin": "You win",
+  "@youWin": {
+    "description": "You win!"
+  },
+  "youLose": "You lose",
+  "@youWin": {
+    "description": "You lose!"
+  },
+  "win": "Win",
+  "@win": {
+    "description": "win"
+  },
+  "lose": "Lose",
+  "@lose": {
+    "description": "lose"
+  },
+  "player": "Player",
+  "@player": {
+    "description": "player"
+  },
+  "computer": "Computer",
+  "@computer": {
+    "description": "Computer"
+  },
+  "rounds": "Rounds",
+  "@rounds": {
+    "description": "Rounds"
+  },
+  "points": "Points",
+  "@points": {
+    "description": "Points"
+  },
   "theme": "Theme",
   "@theme": {
     "description": "theme"

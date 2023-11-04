@@ -33,12 +33,10 @@ class CircleStrokeButton extends StatelessWidget {
         ),
         child: InkWell(
           onTap: onPressed,
-          child: Center(
-            child: SizedBox(
-              width: width ?? AppConstants.buttonWidthDefault,
-              height: width ?? AppConstants.buttonWidthDefault,
-              child: child,
-            ),
+          child: SizedBox(
+            width: width ?? AppConstants.buttonWidthDefault,
+            height: width ?? AppConstants.buttonWidthDefault,
+            child: child,
           ),
         ),
       ),
