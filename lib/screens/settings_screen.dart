@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:the_dartboard/config/assets/assets.dart';
 import 'package:the_dartboard/config/l10n/l10n.dart';
 import 'package:the_dartboard/game/managers/audio_manager.dart';
@@ -6,6 +7,7 @@ import 'package:the_dartboard/screens/main_menu.dart';
 import 'package:the_dartboard/widgets/commons/base_layout.dart';
 import 'package:the_dartboard/widgets/commons/circle_stroke_button.dart';
 import 'package:the_dartboard/widgets/commons/title_screen.dart';
+import '../models/models.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({Key? key}) : super(key: key);
@@ -27,16 +29,16 @@ class SettingsScreen extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  ValueListenableBuilder(
-                      valueListenable: AudioManager.instance.listenableBgm,
-                      builder:
-                          (BuildContext context, bool value, Widget? child) {
+                  Selector<Settings, bool>(
+                      selector: (_, settings) => settings.bgm,
+                      builder: (context, bgm, __) {
                         return CircleStrokeButton(
                           width: 84,
-                          isEnable: value,
+                          isEnable: bgm,
                           onPressed: () {
-                            bool newValue = !value;
-                            AudioManager.instance.setBgm(newValue);
+                            bool newValue = !bgm;
+                            Provider.of<Settings>(context, listen: false).bgm =
+                                newValue;
                             newValue
                                 ? AudioManager.instance
                                     .startBgm(AudioAssets.bgAudio)
