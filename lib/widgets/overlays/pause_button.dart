@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:the_dartboard/config/assets/png_assets.dart';
 import 'package:the_dartboard/game/the_dartboard.dart';
 import 'package:the_dartboard/widgets/commons/circle_stroke_button.dart';
-import 'package:the_dartboard/widgets/overlays/game_over_menu.dart';
 import 'package:the_dartboard/widgets/overlays/pause_menu.dart';
 
 class PauseButton extends StatelessWidget {
@@ -22,7 +21,7 @@ class PauseButton extends StatelessWidget {
           child: Image.asset(PngAssets.pauseIcon),
           onPressed: () {
             game.pauseEngine();
-            game.overlays.add(GameOverMenu.id);
+            game.overlays.add(PauseMenu.id);
           },
         ),
       ),

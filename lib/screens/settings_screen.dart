@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:the_dartboard/config/assets/png_assets.dart';
+import 'package:the_dartboard/config/assets/assets.dart';
 import 'package:the_dartboard/config/l10n/l10n.dart';
+import 'package:the_dartboard/game/managers/audio_manager.dart';
 import 'package:the_dartboard/screens/main_menu.dart';
 import 'package:the_dartboard/widgets/commons/base_layout.dart';
 import 'package:the_dartboard/widgets/commons/circle_stroke_button.dart';
@@ -26,11 +27,24 @@ class SettingsScreen extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  CircleStrokeButton(
-                    width: 84,
-                    onPressed: () {},
-                    child: Image.asset(PngAssets.volumeIcon),
-                  ),
+                  ValueListenableBuilder(
+                      valueListenable: AudioManager.instance.listenableBgm,
+                      builder:
+                          (BuildContext context, bool value, Widget? child) {
+                        return CircleStrokeButton(
+                          width: 84,
+                          isEnable: value,
+                          onPressed: () {
+                            bool newValue = !value;
+                            AudioManager.instance.setBgm(newValue);
+                            newValue
+                                ? AudioManager.instance
+                                    .startBgm(AudioAssets.bgAudio)
+                                : AudioManager.instance.stopBgm();
+                          },
+                          child: Image.asset(PngAssets.volumeIcon),
+                        );
+                      }),
                   const SizedBox(
                     width: 40,
                   ),
