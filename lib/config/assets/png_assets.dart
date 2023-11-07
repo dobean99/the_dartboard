@@ -17,6 +17,8 @@ class PngAssets {
 //get only file name .png ==> example "blue_ballon.png"
   static String get background => 'background_image'.src;
   static String get clockIcon => 'clock'.src;
+  static String get scoreBoard => 'score_board'.src;
+  static String get dartBoard => 'dart_board'.src;
 
   const PngAssets._();
 }
