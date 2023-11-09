@@ -58,11 +58,18 @@ class SettingsScreen extends StatelessWidget {
                   const SizedBox(
                     width: 40,
                   ),
-                  CircleStrokeButton(
-                    onPressed: () {},
-                    width: 84,
-                    child: Image.asset(PngAssets.usaIcon),
-                  ),
+                  Consumer<LocaleProvider>(
+                      builder: (context, provider, snapshot) {
+                    var lang = provider.locale;
+                    return CircleStrokeButton(
+                      onPressed: () {
+                        Locale locale = _changeLanguage(lang);
+                        context.read<LocaleProvider>().setLocale(locale);
+                      },
+                      width: 84,
+                      child: Image.asset(provider.getIcon(lang)),
+                    );
+                  })
                 ],
               ),
             ],
@@ -83,45 +90,19 @@ class SettingsScreen extends StatelessWidget {
               ),
             ),
           ),
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.center,
-          //   children: [
-
-          //     // Game title.
-
-          //     // Switch for sound effects.
-          //     // Selector<Settings, bool>(
-          //     //   selector: (context, settings) => settings.soundEffects,
-          //     //   builder: (context, value, child) {
-          //     //     return SwitchListTile(
-          //     //       title: const Text('Sound Effects'),
-          //     //       value: value,
-          //     //       onChanged: (newValue) {
-          //     //         Provider.of<Settings>(context, listen: false).soundEffects =
-          //     //             newValue;
-          //     //       },
-          //     //     );
-          //     //   },
-          //     // ),
-
-          //     // Switch for background music.
-          //     // Selector<Settings, bool>(
-          //     //   selector: (context, settings) => settings.backgroundMusic,
-          //     //   builder: (context, value, child) {
-          //     //     return SwitchListTile(
-          //     //       title: const Text('Background Music'),
-          //     //       value: value,
-          //     //       onChanged: (newValue) {
-          //     //         Provider.of<Settings>(context, listen: false)
-          //     //             .backgroundMusic = newValue;
-          //     //       },
-          //     //     );
-          //     //   },
-          //     // ),
-          //   ],
-          // ),
         ],
       ),
     );
+  }
+
+  _changeLanguage(Locale lang) {
+    switch (lang.languageCode) {
+      case 'en':
+        return AppLocalizations.supportedLocales[1];
+      case 'pt':
+        return AppLocalizations.supportedLocales[2];
+      case 'ru':
+        return AppLocalizations.supportedLocales[0];
+    }
   }
 }

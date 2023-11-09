@@ -9,8 +9,9 @@ import 'package:the_dartboard/config/assets/assets.dart';
 import 'package:the_dartboard/config/l10n/l10n.dart';
 import 'package:the_dartboard/config/theme/app_theme.dart';
 import 'package:the_dartboard/game/managers/audio_manager.dart';
-import 'package:the_dartboard/models/settings.dart';
 import 'package:the_dartboard/screens/loading_screen.dart';
+
+import 'models/models.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,6 +25,7 @@ Future<void> main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => Settings()),
+        ChangeNotifierProvider(create: (_) => LocaleProvider()),
       ],
       child: const MyApp(),
     ),
@@ -35,20 +37,24 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Ballon in the sky',
-      theme: AppTheme.darkTheme,
-      home: const LoadingScreen(),
-      supportedLocales: AppLocalizations.supportedLocales,
-      // locale: provider.locale,
-      onGenerateTitle: (context) => context.l10n!.appName,
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-      ],
+    return Consumer<LocaleProvider>(
+      builder: (context, provider, snapshot) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Ballon in the sky',
+          theme: AppTheme.darkTheme,
+          home: const LoadingScreen(),
+          supportedLocales: AppLocalizations.supportedLocales,
+          locale: provider.locale,
+          onGenerateTitle: (context) => context.l10n!.appName,
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+          ],
+        );
+      },
     );
   }
 }
