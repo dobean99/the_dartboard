@@ -1,16 +1,16 @@
 import 'dart:async';
 
 import 'package:flame/components.dart';
+import 'package:flame/events.dart';
 import 'package:the_dartboard/config/assets/assets.dart';
 
-class Darts extends SpriteComponent {
+class Darts extends SpriteComponent with DragCallbacks {
   final Turn turn;
   final int throwTimes;
   Darts(
     this.turn,
     this.throwTimes, {
     required position,
-    required sprite,
   }) : super(position: position);
   @override
   Future<void> onLoad() async {
@@ -50,6 +50,23 @@ class Darts extends SpriteComponent {
         return PngAssets.shortYellowDarts;
     }
   }
+
+  // @override
+  // void onDragStart(DragStartEvent event) {
+  //   super.onDragStart(event);
+  //   priority = 10;
+  // }
+
+  // @override
+  // void onDragEnd(DragEndEvent event) {
+  //   super.onDragEnd(event);
+  //   priority = 0;
+  // }
+
+  // @override
+  // void onDragUpdate(DragUpdateEvent event) {
+  //   position += event.delta;
+  // }
 }
 
 enum Turn { playerTurn, computerTurn }

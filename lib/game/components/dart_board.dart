@@ -6,10 +6,11 @@ import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:the_dartboard/config/assets/png_assets.dart';
 import 'package:the_dartboard/core/constants/app_colors.dart';
+import 'package:the_dartboard/game/components/components.dart';
 import 'package:the_dartboard/game/the_dartboard.dart';
 
 class DartBoard extends SpriteComponent
-    with HasGameRef<TheDartboard>, TapCallbacks {
+    with HasGameRef<TheDartboard>, TapCallbacks, DragCallbacks {
   DartBoard({required Vector2? position}) : super(position: position);
   @override
   Future<void> onLoad() async {
@@ -26,6 +27,7 @@ class DartBoard extends SpriteComponent
   @override
   void onTapDown(TapDownEvent event) {
     super.onTapDown(event);
+    print("onTapDown");
     final touchPoint = event.canvasPosition;
     calculateScore(touchPoint.x, touchPoint.y);
   }
@@ -76,7 +78,7 @@ class DartBoard extends SpriteComponent
 
   calculateScore(double dartX, double dartY) {
     double centerX = x;
-    double centerY = y;
+    double centerY = y - 5;
     double distance = sqrt((dartX - centerX) * (dartX - centerX) +
         (dartY - centerY) * (dartY - centerY));
     double angle = atan2(dartY - centerY, dartX - centerX);
@@ -126,7 +128,7 @@ class DartBoard extends SpriteComponent
       score = 15;
     } else if (333 <= angle && angle <= 351) {
       score = 10;
-    } else if (351 <= angle && angle <= 9) {
+    } else if (351 <= angle || angle <= 9) {
       score = 6;
     } else {
       score = 0;
@@ -146,8 +148,48 @@ class DartBoard extends SpriteComponent
       score = 0;
     }
 
-    print("ANGLE: $angle, Distance: $distance, Score: $score ");
+    print(
+        " x:$dartX, y:$dartY, angle:$angle, Distance: $distance, Score: $score ");
 
     return score;
+  }
+
+  late Darts darts;
+  @override
+  void onDragStart(DragStartEvent event) {
+    super.onDragStart(event);
+    darts = Darts(Turn.playerTurn, 0, position: event.localPosition);
+
+    add(darts);
+    print("onDragStart");
+    print(event.canvasPosition);
+  }
+
+  @override
+  void onDragUpdate(DragUpdateEvent event) {
+    super.onDragUpdate(event);
+    // print("onDragUpdate");
+    // print(event.canvasPosition);
+    // darts.position += event.delta;
+    print("onDragUpdate :${darts.position}");
+  }
+
+  @override
+  void onDragEnd(DragEndEvent event) {
+    super.onDragEnd(event);
+    print("onDragEnd :${darts.position}");
+
+    calculateScore(darts.position.x, darts.position.y);
+
+    // print(event);
+  }
+
+  @override
+  void onDragCancel(DragCancelEvent event) {
+    super.onDragCancel(event);
+    remove(darts);
+    print("onDragCancel");
+
+    // print(event);
   }
 }
