@@ -15,12 +15,19 @@ class TimerBar extends PositionComponent {
       super.priority,
       super.key,
       required this.timer});
-
   @override
   void render(Canvas canvas) {
     canvas.drawRect(
-      Rect.fromLTWH(-2, 5, timer, 20),
-      Paint()..color = AppColors.timerBarColor,
+        Rect.fromLTWH(-2, 5, timer, 20),
+        Paint()
+          ..color = AppColors.timerBarColor
+          ..style = PaintingStyle.fill);
+    canvas.drawRect(
+      const Rect.fromLTWH(-2, 5, 200, 20),
+      Paint()
+        ..color = AppColors.whiteColor
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 3.0,
     );
 
     super.render(canvas);

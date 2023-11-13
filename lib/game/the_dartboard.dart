@@ -19,13 +19,12 @@ class TheDartboard extends FlameGame {
     AudioManager.instance.startBgm(AudioAssets.bgAudio);
     timerBar = TimerBar(
       timer: 200,
-      position: Vector2(size.x / 2, 10),
-      anchor: Anchor.topLeft,
+      position: Vector2(size.x / 2 - 100, 10),
+      anchor: Anchor.center,
     );
     final clockIcon = await Sprite.load(PngAssets.clockIcon);
     SpriteComponent clock = SpriteComponent(
-        sprite: clockIcon,
-        position: timerBar.positionOfAnchor(Anchor.centerLeft));
+        sprite: clockIcon, position: Vector2(timerBar.position.x - 50, 10));
 
     playerScoreBoard = ScoreBoard(
       turn: Turn.playerTurn,
