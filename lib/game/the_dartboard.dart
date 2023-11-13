@@ -28,12 +28,12 @@ class TheDartboard extends FlameGame {
         position: timerBar.positionOfAnchor(Anchor.centerLeft));
 
     playerScoreBoard = ScoreBoard(
-      text: 'Player',
+      turn: Turn.playerTurn,
       position: Vector2(size.x / 6, 150),
     );
 
     computureScoreBoard = ScoreBoard(
-      text: 'Computer',
+      turn: Turn.computerTurn,
       position: Vector2(size.x * 5 / 6, 150),
     );
     dartboard = DartBoard(position: Vector2(size.x / 2, size.y / 2 + 40));

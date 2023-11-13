@@ -25,7 +25,7 @@
     "description": "You win!"
   },
   "youLose": "VOCÊ PERDEU!",
-  "@youWin": {
+  "@youLose": {
     "description": "You lose!"
   },
   "win": "Ganhar",
