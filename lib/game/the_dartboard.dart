@@ -12,14 +12,19 @@ class TheDartboard extends FlameGame {
   late ScoreBoard playerScoreBoard;
   late ScoreBoard computureScoreBoard;
   late DartBoard dartboard;
-  @override
-  bool debugMode = true;
+  int playerScore = 500;
+  int computerScore = 500;
+  double countdown = 30;
+  late Timer timer;
+
+  // @override
+  // bool debugMode = true;
+
   @override
   Future<void> onLoad() async {
-    AudioManager.instance.startBgm(AudioAssets.bgAudio);
+    // AudioManager.instance.startBgm(AudioAssets.bgAudio);
     timerBar = TimerBar(
-      timer: 200,
-      position: Vector2(size.x / 2 - 100, 10),
+      position: Vector2(size.x / 2 - 150, 10),
       anchor: Anchor.center,
     );
     final clockIcon = await Sprite.load(PngAssets.clockIcon);
@@ -38,6 +43,20 @@ class TheDartboard extends FlameGame {
     dartboard = DartBoard(position: Vector2(size.x / 2, size.y / 2 + 40));
     addAll([clock, timerBar, playerScoreBoard, computureScoreBoard, dartboard]);
     return super.onLoad();
+  }
+
+  @override
+  void update(double dt) {
+    // TODO: implement update
+    nextTurn();
+    super.update(dt);
+  }
+
+  nextTurn() {
+    if (timerBar.countdown <= 0) {
+      print("NEXT TURN");
+      timerBar.resetTimer();
+    }
   }
 
   void reset() {}

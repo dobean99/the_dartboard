@@ -171,7 +171,7 @@ class DartBoard extends SpriteComponent
     // print("onDragUpdate");
     // print(event.canvasPosition);
     // darts.position += event.delta;
-    print("onDragUpdate :${darts.position}");
+    // print("onDragUpdate :${darts.position}");
   }
 
   @override
@@ -179,7 +179,7 @@ class DartBoard extends SpriteComponent
     super.onDragEnd(event);
     print("onDragEnd :${darts.position}");
 
-    calculateScore(darts.position.x, darts.position.y);
+    calculateScore(darts.position.x, darts.position.y - darts.size.y / 2);
 
     // print(event);
   }

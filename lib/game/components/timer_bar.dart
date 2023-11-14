@@ -3,27 +3,41 @@ import 'package:flutter/material.dart';
 import 'package:the_dartboard/core/constants/app_colors.dart';
 
 class TimerBar extends PositionComponent {
-  final double timer;
-  TimerBar(
-      {super.position,
-      super.size,
-      super.scale,
-      super.angle,
-      super.nativeAngle,
-      super.anchor,
-      super.children,
-      super.priority,
-      super.key,
-      required this.timer});
+  TimerBar({
+    super.position,
+    super.size,
+    super.scale,
+    super.angle,
+    super.nativeAngle,
+    super.anchor,
+    super.children,
+    super.priority,
+    super.key,
+  }) {
+    timer = Timer(1, onTick: () {
+      timerCountdown();
+    }, repeat: true);
+    timer.start();
+  }
+
+  double countdown = 30;
+  late Timer timer;
+
+  @override
+  void update(double dt) {
+    timer.update(dt);
+    super.update(dt);
+  }
+
   @override
   void render(Canvas canvas) {
     canvas.drawRect(
-        Rect.fromLTWH(-2, 5, timer, 20),
+        Rect.fromLTWH(-2, 5, countdown * 10, 20),
         Paint()
           ..color = AppColors.timerBarColor
           ..style = PaintingStyle.fill);
     canvas.drawRect(
-      const Rect.fromLTWH(-2, 5, 200, 20),
+      const Rect.fromLTWH(-2, 5, 300, 20),
       Paint()
         ..color = AppColors.whiteColor
         ..style = PaintingStyle.stroke
@@ -31,5 +45,27 @@ class TimerBar extends PositionComponent {
     );
 
     super.render(canvas);
+  }
+
+  startTimer() {
+    timer.start();
+  }
+
+  resetTimer() {
+    countdown = 30;
+    timer.reset();
+    timer.start();
+  }
+
+  stopTimer() {
+    timer.stop();
+  }
+
+  timerCountdown() {
+    print('aaaaaaa');
+    countdown -= 1;
+    if (countdown <= 0) {
+      timer.stop();
+    }
   }
 }

@@ -29,10 +29,45 @@ class ScoreBoard extends SpriteComponent with HasGameRef<TheDartboard> {
         ),
       ),
       anchor: Anchor.center);
+  var score = [];
+  final scoreFirstThrow = TextComponent(
+    text: '',
+    textRenderer: TextPaint(
+      style: const TextStyle(
+        color: AppColors.whiteColor,
+        fontSize: 16,
+        fontWeight: FontWeight.w700,
+      ),
+    ),
+    anchor: Anchor.center,
+  );
+  final scoreSecondThrow = TextComponent(
+    text: '',
+    textRenderer: TextPaint(
+      style: const TextStyle(
+        color: AppColors.whiteColor,
+        fontSize: 16,
+        fontWeight: FontWeight.w700,
+      ),
+    ),
+    anchor: Anchor.center,
+  );
+  final scoreThirdThrow = TextComponent(
+    text: '',
+    textRenderer: TextPaint(
+      style: const TextStyle(
+        color: AppColors.whiteColor,
+        fontSize: 16,
+        fontWeight: FontWeight.w700,
+      ),
+    ),
+    anchor: Anchor.center,
+  );
   ScoreBoard({required this.turn, required Vector2? position})
       : super(position: position);
   @override
   Future<void> onLoad() async {
+    score = [20, 0, 0];
     sprite = await Sprite.load(PngAssets.scoreBoard);
     anchor = Anchor.topCenter;
   }
@@ -41,7 +76,19 @@ class ScoreBoard extends SpriteComponent with HasGameRef<TheDartboard> {
   void onMount() {
     titleBoardText.position = Vector2(size.x / 2, 45);
     pointBoardText.position = Vector2(size.x / 2, 130);
-    addAll([titleBoardText, pointBoardText]);
+    scoreFirstThrow.text = score[0].toString();
+    scoreFirstThrow.position = Vector2(size.x / 2 - 36, size.y / 2);
+    scoreSecondThrow.text = score[1].toString();
+    scoreSecondThrow.position = Vector2(size.x / 2, size.y / 2);
+    scoreThirdThrow.text = score[2].toString();
+    scoreThirdThrow.position = Vector2(size.x / 2 + 36, size.y / 2);
+    addAll([
+      titleBoardText,
+      pointBoardText,
+      scoreFirstThrow,
+      scoreSecondThrow,
+      scoreThirdThrow
+    ]);
     super.onMount();
   }
 
