@@ -12,16 +12,24 @@ class TheDartboard extends FlameGame {
   late ScoreBoard computureScoreBoard;
   late TurnTextComponent turnTextComponent;
   late DartBoard dartboard;
-  int playerScore = 500;
-  int computerScore = 500;
+  late Turn turn;
+  late int playerScore;
+  late int computerScore;
   double countdown = 30;
   late Timer timer;
 
   @override
   bool debugMode = true;
 
+  init() {
+    turn = Turn.playerTurn;
+    playerScore = computerScore = 500;
+  }
+
   @override
   Future<void> onLoad() async {
+    init();
+    print("Onload");
     // AudioManager.instance.startBgm(AudioAssets.bgAudio);
     timerBar = TimerBar(
       position: Vector2(size.x / 2 - 150, 10),
@@ -31,7 +39,7 @@ class TheDartboard extends FlameGame {
     SpriteComponent clock = SpriteComponent(
         sprite: clockIcon, position: Vector2(timerBar.position.x - 50, 10));
     turnTextComponent = TurnTextComponent(
-        turn: Turn.playerTurn, position: Vector2(size.x / 2, timerBar.y + 30));
+        turn: turn, position: Vector2(size.x / 2, timerBar.y + 30));
 
     playerScoreBoard = ScoreBoard(
       turn: Turn.playerTurn,
@@ -62,18 +70,21 @@ class TheDartboard extends FlameGame {
 
   nextTurn() {
     if (timerBar.countdown <= 0) {
-      if (isPlayerTurn()) {
+      if (turn == Turn.playerTurn) {
         turnTextComponent.turn = Turn.playerTurn;
+        turn = Turn.computerTurn;
       } else {
         turnTextComponent.turn = Turn.computerTurn;
+        turn = Turn.playerTurn;
       }
+      turnTextComponent.turn = turn;
       timerBar.resetTimer();
     }
   }
 
-  bool isPlayerTurn() {
-    return true;
-  }
+  // bool isPlayerTurn() {
+  //   return true;
+  // }
 
   void reset() {}
 }

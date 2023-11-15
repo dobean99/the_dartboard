@@ -9,6 +9,7 @@ import 'package:the_dartboard/game/the_dartboard.dart';
 
 class ScoreBoard extends SpriteComponent with HasGameRef<TheDartboard> {
   final Turn turn;
+  late int totalScore = 500;
   final titleBoardText = TextComponent(
       text: '',
       textRenderer: TextPaint(
@@ -96,7 +97,7 @@ class ScoreBoard extends SpriteComponent with HasGameRef<TheDartboard> {
   void update(double dt) {
     super.update(dt);
     if (game.buildContext != null) {
-      pointBoardText.text = game.buildContext!.l10n!.points;
+      pointBoardText.text = "${game.buildContext!.l10n!.points} $totalScore";
       titleBoardText.text = _getText(turn);
     }
   }
