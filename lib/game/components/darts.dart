@@ -10,8 +10,8 @@ class Darts extends SpriteComponent with DragCallbacks {
   Darts(
     this.turn,
     this.throwTimes, {
-    required position,
-  }) : super(position: position);
+    required Vector2? position,
+  }) : super(position: position, anchor: Anchor.topCenter);
   @override
   Future<void> onLoad() async {
     sprite = await Sprite.load(getDartsColor(turn, throwTimes));
@@ -54,6 +54,7 @@ class Darts extends SpriteComponent with DragCallbacks {
   // @override
   // void onDragStart(DragStartEvent event) {
   //   super.onDragStart(event);
+  //   print("IN Darts: $position");
   //   priority = 10;
   // }
 

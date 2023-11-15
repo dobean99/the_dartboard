@@ -62,7 +62,7 @@ class TimerBar extends PositionComponent {
   }
 
   timerCountdown() {
-    print('aaaaaaa');
+    // print('aaaaaaa');
     countdown -= 1;
     if (countdown <= 0) {
       timer.stop();

@@ -20,6 +20,14 @@
   "@pause": {
     "description": "Pause"
   },
+  "youTurn": "You turn",
+  "@youTurn": {
+    "description": "You turn!"
+  },
+  "computerIsPlaying": "Computer is playing",
+  "@computerIsPlaying": {
+    "description": "Computer is playing"
+  },
   "youWin": "You win",
   "@youWin": {
     "description": "You win!"

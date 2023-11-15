@@ -10,7 +10,7 @@ import 'package:the_dartboard/game/components/components.dart';
 import 'package:the_dartboard/game/the_dartboard.dart';
 
 class DartBoard extends SpriteComponent
-    with HasGameRef<TheDartboard>, TapCallbacks, DragCallbacks {
+    with HasGameRef<TheDartboard>, DragCallbacks {
   DartBoard({required Vector2? position}) : super(position: position);
   @override
   Future<void> onLoad() async {
@@ -24,13 +24,7 @@ class DartBoard extends SpriteComponent
     // paintDartBoard(canvas, Size.fromRadius(size.x / 2));
   }
 
-  @override
-  void onTapDown(TapDownEvent event) {
-    super.onTapDown(event);
-    print("onTapDown");
-    final touchPoint = event.canvasPosition;
-    calculateScore(touchPoint.x, touchPoint.y);
-  }
+  late Darts darts;
 
   void paintDartBoard(Canvas canvas, Size size) {
     const outerColor = AppColors.blackColor;
@@ -74,6 +68,14 @@ class DartBoard extends SpriteComponent
     paint.color = AppColors.howlingPink;
     canvas.drawCircle(
         Offset(size.width / 2, size.height / 2), radius * 0.25, paint);
+  }
+
+  double calculateDistance(Vector2 position) {
+    double centerX = x;
+    double centerY = y - 5;
+    double distance = sqrt((position.x - centerX) * (position.x - centerX) +
+        (position.y - centerY) * (position.y - centerY));
+    return distance;
   }
 
   calculateScore(double dartX, double dartY) {
@@ -154,14 +156,13 @@ class DartBoard extends SpriteComponent
     return score;
   }
 
-  late Darts darts;
   @override
   void onDragStart(DragStartEvent event) {
     super.onDragStart(event);
-    darts = Darts(Turn.playerTurn, 0, position: event.localPosition);
+    darts = Darts(Turn.playerTurn, 0, position: event.canvasPosition);
+    game.add(darts);
 
-    add(darts);
-    print("onDragStart");
+    print("onDragStart :${darts.position}");
     print(event.canvasPosition);
   }
 
@@ -170,8 +171,11 @@ class DartBoard extends SpriteComponent
     super.onDragUpdate(event);
     // print("onDragUpdate");
     // print(event.canvasPosition);
-    // darts.position += event.delta;
-    // print("onDragUpdate :${darts.position}");
+    darts.position += event.delta;
+    // print("onDragUpdate :${event.delta}");
+    if (calculateDistance(darts.position) > size.x / 2) {
+      darts.removeFromParent();
+    }
   }
 
   @override
@@ -179,7 +183,7 @@ class DartBoard extends SpriteComponent
     super.onDragEnd(event);
     print("onDragEnd :${darts.position}");
 
-    calculateScore(darts.position.x, darts.position.y - darts.size.y / 2);
+    calculateScore(darts.x, darts.y);
 
     // print(event);
   }
@@ -187,9 +191,6 @@ class DartBoard extends SpriteComponent
   @override
   void onDragCancel(DragCancelEvent event) {
     super.onDragCancel(event);
-    remove(darts);
-    print("onDragCancel");
-
-    // print(event);
+    darts.removeFromParent();
   }
 }
