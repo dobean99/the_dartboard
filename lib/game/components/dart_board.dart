@@ -11,7 +11,9 @@ import 'package:the_dartboard/game/the_dartboard.dart';
 
 class DartBoard extends SpriteComponent
     with HasGameRef<TheDartboard>, DragCallbacks {
-  DartBoard({required Vector2? position}) : super(position: position);
+  Turn turn;
+  DartBoard({required this.turn, required Vector2? position})
+      : super(position: position);
   @override
   Future<void> onLoad() async {
     sprite = await Sprite.load(PngAssets.dartBoard);
@@ -24,7 +26,11 @@ class DartBoard extends SpriteComponent
     // paintDartBoard(canvas, Size.fromRadius(size.x / 2));
   }
 
+  bool start = false;
+  int throwTimes = 0;
   late Darts darts;
+  late List<Darts> dartsArray = [];
+  late List<int> scoreArray = [];
 
   void paintDartBoard(Canvas canvas, Size size) {
     const outerColor = AppColors.blackColor;
@@ -78,7 +84,7 @@ class DartBoard extends SpriteComponent
     return distance;
   }
 
-  calculateScore(double dartX, double dartY) {
+  int calculateScore(double dartX, double dartY) {
     double centerX = x;
     double centerY = y - 5;
     double distance = sqrt((dartX - centerX) * (dartX - centerX) +
@@ -159,9 +165,12 @@ class DartBoard extends SpriteComponent
   @override
   void onDragStart(DragStartEvent event) {
     super.onDragStart(event);
-    darts = Darts(Turn.playerTurn, 0, position: event.canvasPosition);
-    game.add(darts);
+    start = false;
 
+    throwTimes++;
+    darts = Darts(turn, throwTimes, position: event.canvasPosition);
+    dartsArray.add(darts);
+    game.add(dartsArray.last);
     print("onDragStart :${darts.position}");
     print(event.canvasPosition);
   }
@@ -174,6 +183,7 @@ class DartBoard extends SpriteComponent
     darts.position += event.delta;
     // print("onDragUpdate :${event.delta}");
     if (calculateDistance(darts.position) > size.x / 2) {
+      dartsArray.remove(darts);
       darts.removeFromParent();
     }
   }
@@ -182,8 +192,9 @@ class DartBoard extends SpriteComponent
   void onDragEnd(DragEndEvent event) {
     super.onDragEnd(event);
     print("onDragEnd :${darts.position}");
-
-    calculateScore(darts.x, darts.y);
+    int score = calculateScore(darts.x, darts.y);
+    scoreArray.add(score);
+    start = true;
 
     // print(event);
   }
@@ -192,5 +203,15 @@ class DartBoard extends SpriteComponent
   void onDragCancel(DragCancelEvent event) {
     super.onDragCancel(event);
     darts.removeFromParent();
+  }
+
+  reset() {
+    for (var element in dartsArray) {
+      element.removeFromParent();
+    }
+
+    throwTimes = 1;
+    dartsArray = [];
+    scoreArray = [];
   }
 }

@@ -23,11 +23,11 @@ class PngAssets {
   static String get scoreBoard => 'score_board'.src;
   static String get dartBoard => 'dart_board'.src;
   static String get longBlueDarts => 'long_blue_darts'.src;
-  static String get mediumBlueDarts => 'long_blue_darts'.src;
+  static String get mediumBlueDarts => 'medium_blue_darts'.src;
   static String get shortBlueDarts => 'short_blue_darts'.src;
   static String get longYellowDarts => 'long_yellow_darts'.src;
-  static String get mediumYellowDarts => 'long_yellow_darts'.src;
-  static String get shortYellowDarts => 'short_blue_darts'.src;
+  static String get mediumYellowDarts => 'medium_yellow_darts'.src;
+  static String get shortYellowDarts => 'short_yellow_darts'.src;
   const PngAssets._();
 }
 

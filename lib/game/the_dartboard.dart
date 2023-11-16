@@ -3,18 +3,19 @@ import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:the_dartboard/config/assets/png_assets.dart';
 import 'package:the_dartboard/game/components/turn_text_component.dart';
+import 'package:the_dartboard/widgets/overlays/game_over_menu.dart';
 import 'components/components.dart';
 
 class TheDartboard extends FlameGame {
-  // late SpriteComponent clock;
   late TimerBar timerBar;
   late ScoreBoard playerScoreBoard;
-  late ScoreBoard computureScoreBoard;
+  late ScoreBoard computerScoreBoard;
   late TurnTextComponent turnTextComponent;
   late DartBoard dartboard;
   late Turn turn;
   late int playerScore;
   late int computerScore;
+  late int throwTimes;
   double countdown = 30;
   late Timer timer;
 
@@ -23,6 +24,7 @@ class TheDartboard extends FlameGame {
 
   init() {
     turn = Turn.playerTurn;
+    throwTimes = 0;
     playerScore = computerScore = 500;
   }
 
@@ -45,16 +47,17 @@ class TheDartboard extends FlameGame {
       turn: Turn.playerTurn,
       position: Vector2(size.x / 6, 150),
     );
-    computureScoreBoard = ScoreBoard(
+    computerScoreBoard = ScoreBoard(
       turn: Turn.computerTurn,
       position: Vector2(size.x * 5 / 6, 150),
     );
-    dartboard = DartBoard(position: Vector2(size.x / 2, size.y / 2 + 40));
+    dartboard =
+        DartBoard(position: Vector2(size.x / 2, size.y / 2 + 40), turn: turn);
     addAll([
       clock,
       timerBar,
       playerScoreBoard,
-      computureScoreBoard,
+      computerScoreBoard,
       dartboard,
       turnTextComponent
     ]);
@@ -63,28 +66,55 @@ class TheDartboard extends FlameGame {
 
   @override
   void update(double dt) {
-    // TODO: implement update
+    if (dartboard.start) {
+      updateScore(turn);
+    }
     nextTurn();
+    gameOver();
     super.update(dt);
   }
 
   nextTurn() {
-    if (timerBar.countdown <= 0) {
+    throwTimes = dartboard.throwTimes;
+    if (timerBar.countdown <= 0 || throwTimes > 3) {
       if (turn == Turn.playerTurn) {
         turnTextComponent.turn = Turn.playerTurn;
+        playerScoreBoard.reset();
         turn = Turn.computerTurn;
       } else {
         turnTextComponent.turn = Turn.computerTurn;
+        computerScoreBoard.reset();
         turn = Turn.playerTurn;
       }
+      dartboard.turn = turn;
       turnTextComponent.turn = turn;
+      dartboard.reset();
       timerBar.resetTimer();
     }
   }
 
-  // bool isPlayerTurn() {
-  //   return true;
-  // }
+  updateScore(turn) {
+    if (turn == Turn.playerTurn) {
+      print(throwTimes);
+      playerScoreBoard.score[throwTimes - 1] =
+          dartboard.scoreArray[throwTimes - 1];
+    } else {
+      computerScoreBoard.score[throwTimes - 1] =
+          dartboard.scoreArray[throwTimes - 1];
+    }
+  }
+
+  onDartsThrows() {}
+
+  calculatePoint() {
+    // playerScore -=;
+  }
+
+  gameOver() {
+    if (playerScore <= 0 || computerScore <= 0) {
+      overlays.add(GameOverMenu.id);
+    }
+  }
 
   void reset() {}
 }

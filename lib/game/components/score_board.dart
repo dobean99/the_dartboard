@@ -68,7 +68,7 @@ class ScoreBoard extends SpriteComponent with HasGameRef<TheDartboard> {
       : super(position: position);
   @override
   Future<void> onLoad() async {
-    score = [20, 0, 0];
+    score = [0, 0, 0];
     sprite = await Sprite.load(PngAssets.scoreBoard);
     anchor = Anchor.topCenter;
   }
@@ -96,6 +96,10 @@ class ScoreBoard extends SpriteComponent with HasGameRef<TheDartboard> {
   @override
   void update(double dt) {
     super.update(dt);
+    scoreFirstThrow.text = score[0].toString();
+    scoreSecondThrow.text = score[1].toString();
+    scoreThirdThrow.text = score[2].toString();
+
     if (game.buildContext != null) {
       pointBoardText.text = "${game.buildContext!.l10n!.points} $totalScore";
       titleBoardText.text = _getText(turn);
@@ -109,5 +113,10 @@ class ScoreBoard extends SpriteComponent with HasGameRef<TheDartboard> {
       case Turn.computerTurn:
         return game.buildContext!.l10n!.computer;
     }
+  }
+
+  reset() {
+    score = [0, 0, 0];
+    totalScore = 500;
   }
 }
