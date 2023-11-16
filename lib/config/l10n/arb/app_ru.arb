@@ -20,6 +20,14 @@
   "@pause": {
     "description": "Pause"
   },
+  "youTurn": "Ваш ход",
+  "@youTurn": {
+    "description": "You turn!"
+  },
+  "computerIsPlaying": "Ход компьютера...",
+  "@computerIsPlaying": {
+    "description": "Computer is playing"
+  },
   "youWin": "ВЫИГРЫШ!",
   "@youWin": {
     "description": "You win!"

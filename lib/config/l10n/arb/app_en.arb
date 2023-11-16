@@ -24,7 +24,7 @@
   "@youTurn": {
     "description": "You turn!"
   },
-  "computerIsPlaying": "Computer is playing",
+  "computerIsPlaying": "Computer is playing...",
   "@computerIsPlaying": {
     "description": "Computer is playing"
   },
