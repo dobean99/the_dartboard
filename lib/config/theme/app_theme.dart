@@ -1,4 +1,3 @@
-import 'package:google_fonts/google_fonts.dart';
 import 'package:the_dartboard/core/constants/app_colors.dart';
 import 'package:the_dartboard/core/constants/app_constants.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +23,7 @@ class AppTheme {
           borderRadius: BorderRadius.circular(6),
         ),
       ),
-      fontFamily: "ObelixPro",
+      fontFamily: "Inter",
       inputDecorationTheme: InputDecorationTheme(
         fillColor: Colors.white,
         border: inputBorder,
@@ -38,7 +37,7 @@ class AppTheme {
 
 //dark theme
   static final ThemeData darkTheme = ThemeData(
-    fontFamily: GoogleFonts.inter().fontFamily,
+    fontFamily: "Inter",
     textTheme: const TextTheme(
       displayLarge: TextStyle(
         fontSize: AppConstants.titleFontSize,
