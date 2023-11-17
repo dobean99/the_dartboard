@@ -66,26 +66,28 @@ class TheDartboard extends FlameGame {
 
   @override
   void update(double dt) {
-    if (dartboard.start) {
-      updateScore(turn);
-    }
     nextTurn();
+    // if (dartboard.start) {
+    //   updateScore(turn);
+    // }
     gameOver();
     super.update(dt);
   }
 
   nextTurn() {
-    throwTimes = dartboard.throwTimes;
-    if (timerBar.countdown <= 0 || throwTimes > 3) {
+    if (timerBar.countdown <= 0 || dartboard.throwTimes > 2) {
       if (turn == Turn.playerTurn) {
         turnTextComponent.turn = Turn.playerTurn;
+        dartboard.interactive = false;
         playerScoreBoard.reset();
         turn = Turn.computerTurn;
       } else {
         turnTextComponent.turn = Turn.computerTurn;
+        dartboard.interactive = true;
         computerScoreBoard.reset();
         turn = Turn.playerTurn;
       }
+
       dartboard.turn = turn;
       turnTextComponent.turn = turn;
       dartboard.reset();
@@ -95,12 +97,12 @@ class TheDartboard extends FlameGame {
 
   updateScore(turn) {
     if (turn == Turn.playerTurn) {
-      print(throwTimes);
-      playerScoreBoard.score[throwTimes - 1] =
-          dartboard.scoreArray[throwTimes - 1];
+      print("UPDATE CODE: ${dartboard.scoreArray[dartboard.throwTimes]}");
+      playerScoreBoard.score[dartboard.throwTimes] =
+          dartboard.scoreArray[dartboard.throwTimes];
     } else {
-      computerScoreBoard.score[throwTimes - 1] =
-          dartboard.scoreArray[throwTimes - 1];
+      computerScoreBoard.score[dartboard.throwTimes] =
+          dartboard.scoreArray[dartboard.throwTimes];
     }
   }
 

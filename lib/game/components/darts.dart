@@ -1,10 +1,8 @@
 import 'dart:async';
-
 import 'package:flame/components.dart';
-import 'package:flame/events.dart';
 import 'package:the_dartboard/config/assets/assets.dart';
 
-class Darts extends SpriteComponent with DragCallbacks {
+class Darts extends SpriteComponent {
   final Turn turn;
   final int throwTimes;
   Darts(
@@ -27,11 +25,11 @@ class Darts extends SpriteComponent with DragCallbacks {
 
   String getBlueDartsSprite(int throwTimes) {
     switch (throwTimes) {
-      case 1:
+      case 0:
         return PngAssets.shortBlueDarts;
-      case 2:
+      case 1:
         return PngAssets.mediumBlueDarts;
-      case 3:
+      case 2:
         return PngAssets.longBlueDarts;
       default:
         return PngAssets.shortBlueDarts;
@@ -40,34 +38,16 @@ class Darts extends SpriteComponent with DragCallbacks {
 
   String getYellowDartsSprite(int throwTimes) {
     switch (throwTimes) {
-      case 1:
+      case 0:
         return PngAssets.shortYellowDarts;
-      case 2:
+      case 1:
         return PngAssets.mediumYellowDarts;
-      case 3:
+      case 2:
         return PngAssets.longYellowDarts;
       default:
         return PngAssets.shortYellowDarts;
     }
   }
-
-  // @override
-  // void onDragStart(DragStartEvent event) {
-  //   super.onDragStart(event);
-  //   print("IN Darts: $position");
-  //   priority = 10;
-  // }
-
-  // @override
-  // void onDragEnd(DragEndEvent event) {
-  //   super.onDragEnd(event);
-  //   priority = 0;
-  // }
-
-  // @override
-  // void onDragUpdate(DragUpdateEvent event) {
-  //   position += event.delta;
-  // }
 }
 
 enum Turn { playerTurn, computerTurn }

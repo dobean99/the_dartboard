@@ -26,11 +26,18 @@ class DartBoard extends SpriteComponent
     // paintDartBoard(canvas, Size.fromRadius(size.x / 2));
   }
 
+  @override
+  void onMount() {
+    super.onMount();
+    interactive = true;
+  }
+
   bool start = false;
+  late bool interactive;
   int throwTimes = 0;
   late Darts darts;
   late List<Darts> dartsArray = [];
-  late List<int> scoreArray = [];
+  late List<int> scoreArray = [0, 0, 0];
 
   void paintDartBoard(Canvas canvas, Size size) {
     const outerColor = AppColors.blackColor;
@@ -165,53 +172,53 @@ class DartBoard extends SpriteComponent
   @override
   void onDragStart(DragStartEvent event) {
     super.onDragStart(event);
-    start = false;
+    if (interactive) {
+      darts = Darts(turn, throwTimes, position: event.canvasPosition);
+      game.add(darts);
+    }
 
-    throwTimes++;
-    darts = Darts(turn, throwTimes, position: event.canvasPosition);
-    dartsArray.add(darts);
-    game.add(dartsArray.last);
-    print("onDragStart :${darts.position}");
     print(event.canvasPosition);
   }
 
   @override
   void onDragUpdate(DragUpdateEvent event) {
     super.onDragUpdate(event);
-    // print("onDragUpdate");
-    // print(event.canvasPosition);
-    darts.position += event.delta;
-    // print("onDragUpdate :${event.delta}");
     if (calculateDistance(darts.position) > size.x / 2) {
-      dartsArray.remove(darts);
       darts.removeFromParent();
+    } else {
+      darts.position += event.delta;
     }
   }
 
   @override
-  void onDragEnd(DragEndEvent event) {
+  Future<void> onDragEnd(DragEndEvent event) async {
     super.onDragEnd(event);
-    print("onDragEnd :${darts.position}");
-    int score = calculateScore(darts.x, darts.y);
-    scoreArray.add(score);
-    start = true;
-
-    // print(event);
+    if (!darts.isRemoved) {
+      scoreArray[throwTimes] = calculateScore(darts.x, darts.y);
+      dartsArray.add(darts);
+      if (throwTimes >= 2) {
+        interactive = false;
+        await Future.delayed(const Duration(seconds: 3));
+        interactive = true;
+      }
+      throwTimes++;
+      start = true;
+    }
   }
 
   @override
   void onDragCancel(DragCancelEvent event) {
     super.onDragCancel(event);
-    darts.removeFromParent();
+    dartsArray[throwTimes].removeFromParent();
+    dartsArray.removeAt(throwTimes);
   }
 
   reset() {
     for (var element in dartsArray) {
       element.removeFromParent();
     }
-
-    throwTimes = 1;
+    throwTimes = 0;
     dartsArray = [];
-    scoreArray = [];
+    scoreArray = [0, 0, 0];
   }
 }
