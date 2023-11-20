@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flame/flame.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive/hive.dart';
@@ -17,8 +18,14 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Flame.device.fullScreen();
   Flame.device.setLandscape();
-  final Directory appDocumentsDir = await getApplicationDocumentsDirectory();
-  Hive.init(appDocumentsDir.path);
+  String path;
+  if (kIsWeb) {
+    path = "/assets/mydb.db";
+  } else {
+    final Directory appDocumentsDir = await getApplicationDocumentsDirectory();
+    path = appDocumentsDir.path;
+  }
+  Hive.init(path);
   Settings settings = await _readSettings();
   AudioManager.instance.init([AudioAssets.bgAudio], settings);
   runApp(
@@ -41,7 +48,7 @@ class MyApp extends StatelessWidget {
       builder: (context, provider, snapshot) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
-          title: 'Ballon in the sky',
+          title: 'The Dartboard',
           theme: AppTheme.darkTheme,
           home: const LoadingScreen(),
           supportedLocales: AppLocalizations.supportedLocales,
@@ -60,7 +67,7 @@ class MyApp extends StatelessWidget {
 }
 
 Future<Settings> _readSettings() async {
-  final pref = await Hive.openBox('Settings');
+  final pref = await Hive.openBox(Settings.settingsKey);
   if (pref.get('bgm') == null) {
     pref.put('bgm', true);
   }

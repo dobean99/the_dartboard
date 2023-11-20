@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:the_dartboard/config/assets/png_assets.dart';
 import 'package:the_dartboard/config/l10n/l10n.dart';
 import 'package:the_dartboard/core/constants/app_colors.dart';
 import 'package:the_dartboard/game/the_dartboard.dart';
+import 'package:the_dartboard/models/score.dart';
 import 'package:the_dartboard/widgets/commons/stroke_text.dart';
 import 'package:the_dartboard/widgets/overlays/home_button.dart';
 
@@ -20,7 +22,7 @@ class GameOverMenu extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            StrokeText(text: context.l10n!.youWin),
+            StrokeText(text: _getTextTitle(context)),
             const SizedBox(
               height: 10,
             ),
@@ -85,19 +87,19 @@ class GameOverMenu extends StatelessWidget {
                               style: const TextStyle(fontSize: 16),
                             ),
                           ),
-                          const DataCell(
+                          DataCell(
                             Center(
                               child: Text(
-                                '43',
-                                style: TextStyle(fontSize: 16),
+                                game.playerRounds.toString(),
+                                style: const TextStyle(fontSize: 16),
                               ),
                             ),
                           ),
-                          const DataCell(
+                          DataCell(
                             Center(
                               child: Text(
-                                '43',
-                                style: TextStyle(fontSize: 16),
+                                game.playerScore.toString(),
+                                style: const TextStyle(fontSize: 16),
                               ),
                             ),
                           ),
@@ -111,19 +113,19 @@ class GameOverMenu extends StatelessWidget {
                               style: const TextStyle(fontSize: 16),
                             ),
                           ),
-                          const DataCell(
+                          DataCell(
                             Center(
                               child: Text(
-                                '43',
-                                style: TextStyle(fontSize: 16),
+                                game.computerRounds.toString(),
+                                style: const TextStyle(fontSize: 16),
                               ),
                             ),
                           ),
-                          const DataCell(
+                          DataCell(
                             Center(
                               child: Text(
-                                '43',
-                                style: TextStyle(fontSize: 16),
+                                game.playerScore.toString(),
+                                style: const TextStyle(fontSize: 16),
                               ),
                             ),
                           ),
@@ -142,5 +144,33 @@ class GameOverMenu extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  bool _checkWinner() => game.playerScore < game.computerScore;
+
+  String _getTextTitle(BuildContext context) {
+    return _checkWinner() ? context.l10n!.youWin : context.l10n!.youLose;
+  }
+
+  Future<Score?> getStatistic() async {
+    final box = await Hive.openBox<Score>(Score.scoresBox);
+    final scoreData = box.get(Score.scoresData);
+    if (scoreData == null) {
+      box.put(Score.scoresData, Score(totalRounds: 0, totalPlayerWin: 0));
+    }
+    return box.get(Score.scoresData);
+  }
+
+  Future<void> updateStatistic() async {
+    final box = await Hive.openBox<Score>(Score.scoresBox);
+    Score? score = await getStatistic();
+    int totalRounds = score!.totalRounds;
+    int totalPlayerWin = score.totalPlayerWin;
+    totalRounds += 1;
+    if (_checkWinner()) {
+      totalPlayerWin += 1;
+    }
+    box.put(Score.scoresData,
+        Score(totalRounds: totalRounds, totalPlayerWin: totalPlayerWin));
   }
 }

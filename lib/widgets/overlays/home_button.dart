@@ -25,6 +25,7 @@ class HomeButton extends StatelessWidget {
             Navigator.of(context).pushReplacement(MaterialPageRoute(
               builder: (context) => const MainMenu(),
             ));
+            game.reset();
           },
         ),
       ),

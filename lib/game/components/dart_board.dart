@@ -175,9 +175,8 @@ class DartBoard extends SpriteComponent
     if (interactive) {
       darts = Darts(turn, throwTimes, position: event.canvasPosition);
       game.add(darts);
+      print(event.canvasPosition);
     }
-
-    print(event.canvasPosition);
   }
 
   @override
@@ -211,6 +210,29 @@ class DartBoard extends SpriteComponent
     super.onDragCancel(event);
     dartsArray[throwTimes].removeFromParent();
     dartsArray.removeAt(throwTimes);
+  }
+
+  Future<void> computerPlay() async {
+    while (throwTimes <= 2) {
+      double positionX =
+          (Random().nextDouble() * size.x / 2) + (position.x - size.x / 2);
+      double positionY =
+          (Random().nextDouble() * size.y / 2) + (position.y - size.y / 2);
+      darts = Darts(turn, throwTimes, position: Vector2(positionX, positionY));
+      game.add(darts);
+      scoreArray[throwTimes] = calculateScore(darts.x, darts.y);
+      dartsArray.add(darts);
+      await Future.delayed(const Duration(seconds: 3));
+      throwTimes++;
+    }
+  }
+
+  int totalScore() {
+    int sum = 0;
+    for (var element in scoreArray) {
+      sum += element;
+    }
+    return sum;
   }
 
   reset() {

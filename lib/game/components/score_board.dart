@@ -9,7 +9,7 @@ import 'package:the_dartboard/game/the_dartboard.dart';
 
 class ScoreBoard extends SpriteComponent with HasGameRef<TheDartboard> {
   final Turn turn;
-  late int totalScore = 500;
+  late int totalScore;
   final titleBoardText = TextComponent(
       text: '',
       textRenderer: TextPaint(
@@ -30,7 +30,7 @@ class ScoreBoard extends SpriteComponent with HasGameRef<TheDartboard> {
         ),
       ),
       anchor: Anchor.center);
-  var score = [];
+  List<int> score = [0, 0, 0];
   final scoreFirstThrow = TextComponent(
     text: '',
     textRenderer: TextPaint(
@@ -68,7 +68,7 @@ class ScoreBoard extends SpriteComponent with HasGameRef<TheDartboard> {
       : super(position: position);
   @override
   Future<void> onLoad() async {
-    score = [0, 0, 0];
+    totalScore = 500;
     sprite = await Sprite.load(PngAssets.scoreBoard);
     anchor = Anchor.topCenter;
   }
@@ -102,7 +102,7 @@ class ScoreBoard extends SpriteComponent with HasGameRef<TheDartboard> {
 
     if (game.buildContext != null) {
       pointBoardText.text = "${game.buildContext!.l10n!.points} $totalScore";
-      titleBoardText.text = _getText(turn);
+      titleBoardText.text = _getText(turn).toUpperCase();
     }
   }
 
@@ -117,6 +117,6 @@ class ScoreBoard extends SpriteComponent with HasGameRef<TheDartboard> {
 
   reset() {
     score = [0, 0, 0];
-    totalScore = 500;
+    // totalScore = 500;
   }
 }

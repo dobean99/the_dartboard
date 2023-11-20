@@ -15,16 +15,17 @@ class TheDartboard extends FlameGame {
   late Turn turn;
   late int playerScore;
   late int computerScore;
-  late int throwTimes;
   double countdown = 30;
   late Timer timer;
+  late int playerRounds;
+  late int computerRounds;
 
   @override
   bool debugMode = true;
 
   init() {
+    playerRounds = computerRounds = 0;
     turn = Turn.playerTurn;
-    throwTimes = 0;
     playerScore = computerScore = 500;
   }
 
@@ -66,57 +67,57 @@ class TheDartboard extends FlameGame {
 
   @override
   void update(double dt) {
+    updateScore(turn);
     nextTurn();
-    // if (dartboard.start) {
-    //   updateScore(turn);
-    // }
     gameOver();
     super.update(dt);
   }
 
   nextTurn() {
     if (timerBar.countdown <= 0 || dartboard.throwTimes > 2) {
+      dartboard.reset();
       if (turn == Turn.playerTurn) {
-        turnTextComponent.turn = Turn.playerTurn;
         dartboard.interactive = false;
         playerScoreBoard.reset();
         turn = Turn.computerTurn;
+        dartboard.turn = turn;
+        dartboard.computerPlay();
+        computerScore -= dartboard.totalScore();
       } else {
-        turnTextComponent.turn = Turn.computerTurn;
         dartboard.interactive = true;
         computerScoreBoard.reset();
         turn = Turn.playerTurn;
+        dartboard.turn = turn;
+        playerScore -= dartboard.totalScore();
       }
-
-      dartboard.turn = turn;
       turnTextComponent.turn = turn;
-      dartboard.reset();
       timerBar.resetTimer();
     }
   }
 
   updateScore(turn) {
     if (turn == Turn.playerTurn) {
-      print("UPDATE CODE: ${dartboard.scoreArray[dartboard.throwTimes]}");
-      playerScoreBoard.score[dartboard.throwTimes] =
-          dartboard.scoreArray[dartboard.throwTimes];
+      playerScoreBoard.score = dartboard.scoreArray;
+      playerScoreBoard.totalScore = playerScore - dartboard.totalScore();
     } else {
-      computerScoreBoard.score[dartboard.throwTimes] =
-          dartboard.scoreArray[dartboard.throwTimes];
+      computerScoreBoard.score = dartboard.scoreArray;
+      computerScoreBoard.totalScore = computerScore - dartboard.totalScore();
     }
-  }
-
-  onDartsThrows() {}
-
-  calculatePoint() {
-    // playerScore -=;
   }
 
   gameOver() {
     if (playerScore <= 0 || computerScore <= 0) {
+      pauseEngine();
       overlays.add(GameOverMenu.id);
     }
   }
 
-  void reset() {}
+  void reset() {
+    init();
+    turn = Turn.playerTurn;
+    playerScoreBoard.reset();
+    computerScoreBoard.reset();
+    dartboard.reset();
+    timerBar.resetTimer();
+  }
 }
