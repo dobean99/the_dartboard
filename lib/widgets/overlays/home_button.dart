@@ -8,8 +8,10 @@ class HomeButton extends StatelessWidget {
   static const String id = 'HomeButton';
   final TheDartboard game;
   final bool isBottom;
+  final VoidCallback? onPressed;
 
-  const HomeButton({Key? key, required this.game, this.isBottom = false})
+  const HomeButton(
+      {Key? key, required this.game, this.isBottom = false, this.onPressed})
       : super(key: key);
 
   @override
@@ -19,15 +21,14 @@ class HomeButton extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.only(left: 20.0, top: 20.0, right: 20.0),
         child: CircleStrokeButton(
-          width: 54,
-          child: Image.asset(PngAssets.homeIcon),
-          onPressed: () {
-            Navigator.of(context).pushReplacement(MaterialPageRoute(
-              builder: (context) => const MainMenu(),
-            ));
-            game.reset();
-          },
-        ),
+            width: 54,
+            child: Image.asset(PngAssets.homeIcon),
+            onPressed: onPressed ??
+                () {
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    builder: (context) => const MainMenu(),
+                  ));
+                }),
       ),
     );
   }

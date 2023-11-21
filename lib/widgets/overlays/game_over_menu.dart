@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
+import 'package:provider/provider.dart';
 import 'package:the_dartboard/config/assets/png_assets.dart';
 import 'package:the_dartboard/config/l10n/l10n.dart';
 import 'package:the_dartboard/core/constants/app_colors.dart';
 import 'package:the_dartboard/game/the_dartboard.dart';
-import 'package:the_dartboard/models/score.dart';
+import 'package:the_dartboard/screens/main_menu.dart';
 import 'package:the_dartboard/widgets/commons/stroke_text.dart';
 import 'package:the_dartboard/widgets/overlays/home_button.dart';
+
+import '../../models/models.dart';
 
 class GameOverMenu extends StatelessWidget {
   static const String id = 'GameOverMenu';
@@ -15,6 +17,7 @@ class GameOverMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final score = Provider.of<Score>(context, listen: false);
     return Scaffold(
       backgroundColor: AppColors.blackColor.withAlpha(100),
       body: Center(
@@ -139,6 +142,15 @@ class GameOverMenu extends StatelessWidget {
             HomeButton(
               game: game,
               isBottom: true,
+              onPressed: () {
+                game.overlays.remove(GameOverMenu.id);
+                game.reset();
+                game.resumeEngine();
+                score.updateScore(game.playerScore, game.computerScore);
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  builder: (context) => const MainMenu(),
+                ));
+              },
             ),
           ],
         ),
@@ -150,27 +162,5 @@ class GameOverMenu extends StatelessWidget {
 
   String _getTextTitle(BuildContext context) {
     return _checkWinner() ? context.l10n!.youWin : context.l10n!.youLose;
-  }
-
-  Future<Score?> getStatistic() async {
-    final box = await Hive.openBox<Score>(Score.scoresBox);
-    final scoreData = box.get(Score.scoresData);
-    if (scoreData == null) {
-      box.put(Score.scoresData, Score(totalRounds: 0, totalPlayerWin: 0));
-    }
-    return box.get(Score.scoresData);
-  }
-
-  Future<void> updateStatistic() async {
-    final box = await Hive.openBox<Score>(Score.scoresBox);
-    Score? score = await getStatistic();
-    int totalRounds = score!.totalRounds;
-    int totalPlayerWin = score.totalPlayerWin;
-    totalRounds += 1;
-    if (_checkWinner()) {
-      totalPlayerWin += 1;
-    }
-    box.put(Score.scoresData,
-        Score(totalRounds: totalRounds, totalPlayerWin: totalPlayerWin));
   }
 }

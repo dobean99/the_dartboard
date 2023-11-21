@@ -26,14 +26,7 @@ class DartBoard extends SpriteComponent
     // paintDartBoard(canvas, Size.fromRadius(size.x / 2));
   }
 
-  @override
-  void onMount() {
-    super.onMount();
-    interactive = true;
-  }
-
   bool start = false;
-  late bool interactive;
   int throwTimes = 0;
   late Darts darts;
   late List<Darts> dartsArray = [];
@@ -172,7 +165,7 @@ class DartBoard extends SpriteComponent
   @override
   void onDragStart(DragStartEvent event) {
     super.onDragStart(event);
-    if (interactive) {
+    if (turn == Turn.playerTurn) {
       darts = Darts(turn, throwTimes, position: event.canvasPosition);
       game.add(darts);
       print(event.canvasPosition);
@@ -196,9 +189,7 @@ class DartBoard extends SpriteComponent
       scoreArray[throwTimes] = calculateScore(darts.x, darts.y);
       dartsArray.add(darts);
       if (throwTimes >= 2) {
-        interactive = false;
         await Future.delayed(const Duration(seconds: 3));
-        interactive = true;
       }
       throwTimes++;
       start = true;

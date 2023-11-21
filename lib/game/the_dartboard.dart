@@ -68,30 +68,29 @@ class TheDartboard extends FlameGame {
   @override
   void update(double dt) {
     updateScore(turn);
-    nextTurn();
     gameOver();
+    nextTurn();
     super.update(dt);
   }
 
   nextTurn() {
     if (timerBar.countdown <= 0 || dartboard.throwTimes > 2) {
-      dartboard.reset();
       if (turn == Turn.playerTurn) {
-        dartboard.interactive = false;
         playerScoreBoard.reset();
         turn = Turn.computerTurn;
         dartboard.turn = turn;
         dartboard.computerPlay();
         computerScore -= dartboard.totalScore();
       } else {
-        dartboard.interactive = true;
         computerScoreBoard.reset();
         turn = Turn.playerTurn;
         dartboard.turn = turn;
         playerScore -= dartboard.totalScore();
       }
+      dartboard.reset();
       turnTextComponent.turn = turn;
       timerBar.resetTimer();
+      print("PLAYER SCORE $playerScore");
     }
   }
 

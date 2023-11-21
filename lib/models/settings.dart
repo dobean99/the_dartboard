@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
-class Settings extends ChangeNotifier {
+part 'settings.g.dart';
+
+@HiveType(typeId: 2)
+class Settings extends ChangeNotifier with HiveObjectMixin {
+  static const String settingsBox = 'SettingsBox';
   static const String settingsKey = 'Settings';
   Settings({bool bgm = false}) {
     _bgm = bgm;
   }
-  var box = Hive.box(settingsKey);
-
+  @HiveField(0)
   bool _bgm = false;
   bool get bgm => _bgm;
   set bgm(bool value) {
     _bgm = value;
-    box.put("bgm", _bgm);
     notifyListeners();
+    save();
   }
 }
