@@ -25,6 +25,8 @@ class HomeButton extends StatelessWidget {
             child: Image.asset(PngAssets.homeIcon),
             onPressed: onPressed ??
                 () {
+                  game.resumeEngine();
+                  game.reset();
                   Navigator.of(context).pushReplacement(MaterialPageRoute(
                     builder: (context) => const MainMenu(),
                   ));

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:the_dartboard/config/assets/assets.dart';
 import 'package:the_dartboard/config/l10n/l10n.dart';
-import 'package:the_dartboard/game/managers/audio_manager.dart';
 import 'package:the_dartboard/screens/main_menu.dart';
 import 'package:the_dartboard/widgets/commons/base_layout.dart';
 import 'package:the_dartboard/widgets/commons/circle_stroke_button.dart';
@@ -39,10 +38,6 @@ class SettingsScreen extends StatelessWidget {
                             bool newValue = !bgm;
                             Provider.of<Settings>(context, listen: false).bgm =
                                 newValue;
-                            newValue
-                                ? AudioManager.instance
-                                    .startBgm(AudioAssets.bgAudio)
-                                : AudioManager.instance.stopBgm();
                           },
                           child: Image.asset(PngAssets.volumeIcon),
                         );

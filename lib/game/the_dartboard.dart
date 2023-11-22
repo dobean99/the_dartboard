@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:the_dartboard/config/assets/png_assets.dart';
-import 'package:the_dartboard/game/components/turn_text_component.dart';
+import 'package:the_dartboard/config/config.dart';
 import 'package:the_dartboard/widgets/overlays/game_over_menu.dart';
 import 'components/components.dart';
 
@@ -19,9 +19,10 @@ class TheDartboard extends FlameGame {
   late Timer timer;
   late int playerRounds;
   late int computerRounds;
+  late AudioPlayerComponent _audioPlayerComponent;
 
   @override
-  bool debugMode = true;
+  bool debugMode = false;
 
   init() {
     playerRounds = computerRounds = 0;
@@ -33,7 +34,7 @@ class TheDartboard extends FlameGame {
   Future<void> onLoad() async {
     init();
     print("Onload");
-    // AudioManager.instance.startBgm(AudioAssets.bgAudio);
+    _audioPlayerComponent = AudioPlayerComponent();
     timerBar = TimerBar(
       position: Vector2(size.x / 2 - 150, 10),
       anchor: Anchor.center,
@@ -55,6 +56,7 @@ class TheDartboard extends FlameGame {
     dartboard =
         DartBoard(position: Vector2(size.x / 2, size.y / 2 + 40), turn: turn);
     addAll([
+      _audioPlayerComponent,
       clock,
       timerBar,
       playerScoreBoard,
@@ -63,6 +65,12 @@ class TheDartboard extends FlameGame {
       turnTextComponent
     ]);
     return super.onLoad();
+  }
+
+  @override
+  void onAttach() {
+    _audioPlayerComponent.playBgm(AudioAssets.bgAudio);
+    super.onAttach();
   }
 
   @override
@@ -79,28 +87,30 @@ class TheDartboard extends FlameGame {
         playerScoreBoard.reset();
         turn = Turn.computerTurn;
         dartboard.turn = turn;
+        dartboard.resetTurn();
+        dartboard.isEnable = false;
         dartboard.computerPlay();
-        computerScore -= dartboard.totalScore();
       } else {
         computerScoreBoard.reset();
         turn = Turn.playerTurn;
         dartboard.turn = turn;
-        playerScore -= dartboard.totalScore();
+        dartboard.resetTurn();
+        dartboard.isEnable = true;
       }
-      dartboard.reset();
       turnTextComponent.turn = turn;
       timerBar.resetTimer();
-      print("PLAYER SCORE $playerScore");
     }
   }
 
   updateScore(turn) {
     if (turn == Turn.playerTurn) {
       playerScoreBoard.score = dartboard.scoreArray;
-      playerScoreBoard.totalScore = playerScore - dartboard.totalScore();
+      playerScoreBoard.totalScore = dartboard.playerScore;
+      playerScore = dartboard.playerScore;
     } else {
       computerScoreBoard.score = dartboard.scoreArray;
-      computerScoreBoard.totalScore = computerScore - dartboard.totalScore();
+      computerScoreBoard.totalScore = dartboard.computerScore;
+      computerScore = dartboard.computerScore;
     }
   }
 
@@ -112,11 +122,17 @@ class TheDartboard extends FlameGame {
   }
 
   void reset() {
-    init();
     turn = Turn.playerTurn;
-    playerScoreBoard.reset();
-    computerScoreBoard.reset();
-    dartboard.reset();
+    turnTextComponent.turn = turn;
+    playerScoreBoard.resetGame();
+    computerScoreBoard.resetGame();
+    dartboard.resetGame();
     timerBar.resetTimer();
+  }
+
+  @override
+  void onDetach() {
+    _audioPlayerComponent.stopBgm();
+    super.onDetach();
   }
 }

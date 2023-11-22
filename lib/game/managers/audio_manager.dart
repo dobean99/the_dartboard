@@ -19,7 +19,7 @@ class AudioManager {
   }
 
   void stopBgm() {
-    if (settings.bgm) {
+    if (!settings.bgm) {
       FlameAudio.bgm.stop();
     }
   }

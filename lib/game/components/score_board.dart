@@ -117,6 +117,10 @@ class ScoreBoard extends SpriteComponent with HasGameRef<TheDartboard> {
 
   reset() {
     score = [0, 0, 0];
-    // totalScore = 500;
+  }
+
+  resetGame() {
+    score = [0, 0, 0];
+    totalScore = 500;
   }
 }

@@ -127,7 +127,7 @@ class GameOverMenu extends StatelessWidget {
                           DataCell(
                             Center(
                               child: Text(
-                                game.playerScore.toString(),
+                                game.computerScore.toString(),
                                 style: const TextStyle(fontSize: 16),
                               ),
                             ),
@@ -144,9 +144,9 @@ class GameOverMenu extends StatelessWidget {
               isBottom: true,
               onPressed: () {
                 game.overlays.remove(GameOverMenu.id);
-                game.reset();
                 game.resumeEngine();
                 score.updateScore(game.playerScore, game.computerScore);
+                game.reset();
                 Navigator.of(context).pushReplacement(MaterialPageRoute(
                   builder: (context) => const MainMenu(),
                 ));

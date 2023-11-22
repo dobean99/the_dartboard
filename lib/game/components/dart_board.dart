@@ -26,11 +26,13 @@ class DartBoard extends SpriteComponent
     // paintDartBoard(canvas, Size.fromRadius(size.x / 2));
   }
 
-  bool start = false;
   int throwTimes = 0;
   late Darts darts;
   late List<Darts> dartsArray = [];
   late List<int> scoreArray = [0, 0, 0];
+  late bool isEnable = true;
+  int playerScore = 500;
+  int computerScore = 500;
 
   void paintDartBoard(Canvas canvas, Size size) {
     const outerColor = AppColors.blackColor;
@@ -165,7 +167,7 @@ class DartBoard extends SpriteComponent
   @override
   void onDragStart(DragStartEvent event) {
     super.onDragStart(event);
-    if (turn == Turn.playerTurn) {
+    if (isEnable) {
       darts = Darts(turn, throwTimes, position: event.canvasPosition);
       game.add(darts);
       print(event.canvasPosition);
@@ -175,24 +177,31 @@ class DartBoard extends SpriteComponent
   @override
   void onDragUpdate(DragUpdateEvent event) {
     super.onDragUpdate(event);
-    if (calculateDistance(darts.position) > size.x / 2) {
-      darts.removeFromParent();
-    } else {
-      darts.position += event.delta;
+    if (isEnable) {
+      if (calculateDistance(darts.position) > size.x / 2) {
+        darts.removeFromParent();
+      } else {
+        darts.position += event.delta;
+      }
     }
   }
 
   @override
   Future<void> onDragEnd(DragEndEvent event) async {
     super.onDragEnd(event);
-    if (!darts.isRemoved) {
-      scoreArray[throwTimes] = calculateScore(darts.x, darts.y);
-      dartsArray.add(darts);
-      if (throwTimes >= 2) {
-        await Future.delayed(const Duration(seconds: 3));
+    if (isEnable) {
+      if (!darts.isRemoved) {
+        int score = calculateScore(darts.x, darts.y);
+        scoreArray[throwTimes] = score;
+        playerScore -= score;
+        dartsArray.add(darts);
+        if (throwTimes >= 2) {
+          isEnable = false;
+          await Future.delayed(const Duration(seconds: 3));
+          isEnable = true;
+        }
+        throwTimes++;
       }
-      throwTimes++;
-      start = true;
     }
   }
 
@@ -206,32 +215,33 @@ class DartBoard extends SpriteComponent
   Future<void> computerPlay() async {
     while (throwTimes <= 2) {
       double positionX =
-          (Random().nextDouble() * size.x / 2) + (position.x - size.x / 2);
+          (Random().nextDouble() * size.x / 2) + (position.x - size.x / 4);
       double positionY =
-          (Random().nextDouble() * size.y / 2) + (position.y - size.y / 2);
+          (Random().nextDouble() * size.y / 2) + (position.y - size.y / 4);
       darts = Darts(turn, throwTimes, position: Vector2(positionX, positionY));
       game.add(darts);
-      scoreArray[throwTimes] = calculateScore(darts.x, darts.y);
+      int score = calculateScore(darts.x, darts.y);
+      scoreArray[throwTimes] = score;
+      computerScore -= score;
       dartsArray.add(darts);
       await Future.delayed(const Duration(seconds: 3));
       throwTimes++;
     }
   }
 
-  int totalScore() {
-    int sum = 0;
-    for (var element in scoreArray) {
-      sum += element;
-    }
-    return sum;
-  }
-
-  reset() {
+  resetTurn() {
     for (var element in dartsArray) {
       element.removeFromParent();
     }
     throwTimes = 0;
     dartsArray = [];
     scoreArray = [0, 0, 0];
+  }
+
+  resetGame() {
+    playerScore = computerScore = 500;
+    turn = Turn.playerTurn;
+    isEnable = true;
+    resetTurn();
   }
 }
