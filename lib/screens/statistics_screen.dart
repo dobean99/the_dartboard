@@ -8,8 +8,6 @@ import 'package:the_dartboard/widgets/commons/base_layout.dart';
 import 'package:the_dartboard/widgets/commons/circle_stroke_button.dart';
 import 'package:the_dartboard/widgets/commons/title_screen.dart';
 
-import '../core/constants/app_colors.dart';
-
 class StatisticsScreen extends StatelessWidget {
   const StatisticsScreen({Key? key}) : super(key: key);
 
@@ -38,107 +36,95 @@ class StatisticsScreen extends StatelessWidget {
                     height: 176,
                     width: 300,
                     child: Padding(
-                      padding: const EdgeInsets.all(15.0),
+                      padding: const EdgeInsets.only(
+                          top: 15.0, left: 25.0, bottom: 30, right: 15),
                       child: Consumer<Score>(builder: (context, score, child) {
-                        return DataTable(
-                          // horizontalMargin: 0,
-                          // dataRowMaxHeight: 25,
-                          // dataRowMinHeight: 16,
-                          columnSpacing: 5,
-                          border: const TableBorder(
-                            horizontalInside: BorderSide(
-                                width: 1,
-                                color: AppColors.whiteColor,
-                                style: BorderStyle.solid),
-                            verticalInside: BorderSide(
-                                width: 1,
-                                color: AppColors.whiteColor,
-                                style: BorderStyle.solid),
-                          ),
-                          // border: TableBorder.all(color: AppColors.whiteColor),
-                          columns: <DataColumn>[
-                            const DataColumn(
-                              label: Text(
-                                '',
-                                style: TextStyle(fontSize: 16),
-                              ),
+                        return Theme(
+                          data: Theme.of(context).copyWith(
+                            dividerColor: Colors.transparent,
+                            dividerTheme: const DividerThemeData(
+                              color: Colors.transparent,
+                              space: 0,
+                              thickness: 0,
+                              indent: 0,
+                              endIndent: 0,
                             ),
-                            DataColumn(
-                              label: Center(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(16.0),
-                                  child: Text(
-                                    context.l10n!.win,
-                                    style: const TextStyle(fontSize: 16),
-                                  ),
+                          ),
+                          child: DataTable(
+                            horizontalMargin: 0,
+                            dataRowMaxHeight: 30,
+                            dataRowMinHeight: 20,
+                            columnSpacing: 0,
+                            dividerThickness: 0.0,
+                            columns: <DataColumn>[
+                              const DataColumn(
+                                label: Text(
+                                  '',
+                                  style: TextStyle(fontSize: 16),
                                 ),
                               ),
-                            ),
-                            DataColumn(
-                              label: Center(
-                                child: Text(
+                              DataColumn(
+                                label: Text(
+                                  context.l10n!.win,
+                                  style: const TextStyle(fontSize: 16),
+                                ),
+                              ),
+                              DataColumn(
+                                label: Text(
                                   context.l10n!.lose,
                                   style: const TextStyle(fontSize: 16),
                                 ),
                               ),
-                            ),
-                          ],
-                          rows: <DataRow>[
-                            DataRow(
-                              cells: <DataCell>[
-                                DataCell(
-                                  Text(
-                                    context.l10n!.player,
-                                    style: const TextStyle(fontSize: 16),
+                            ],
+                            rows: <DataRow>[
+                              DataRow(
+                                cells: <DataCell>[
+                                  DataCell(
+                                    Text(
+                                      context.l10n!.player,
+                                      style: const TextStyle(fontSize: 16),
+                                    ),
                                   ),
-                                ),
-                                DataCell(
-                                  Center(
-                                    child: Text(
+                                  DataCell(
+                                    Text(
                                       score.totalPlayerWin.toString(),
                                       style: const TextStyle(fontSize: 16),
                                     ),
                                   ),
-                                ),
-                                DataCell(
-                                  Center(
-                                    child: Text(
+                                  DataCell(
+                                    Text(
                                       (score.totalRounds - score.totalPlayerWin)
                                           .toString(),
                                       style: const TextStyle(fontSize: 16),
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
-                            DataRow(
-                              cells: <DataCell>[
-                                DataCell(
-                                  Text(
-                                    context.l10n!.computer,
-                                    style: const TextStyle(fontSize: 16),
+                                ],
+                              ),
+                              DataRow(
+                                cells: <DataCell>[
+                                  DataCell(
+                                    Text(
+                                      context.l10n!.computer,
+                                      style: const TextStyle(fontSize: 16),
+                                    ),
                                   ),
-                                ),
-                                DataCell(
-                                  Center(
-                                    child: Text(
+                                  DataCell(
+                                    Text(
                                       (score.totalRounds - score.totalPlayerWin)
                                           .toString(),
                                       style: const TextStyle(fontSize: 16),
                                     ),
                                   ),
-                                ),
-                                DataCell(
-                                  Center(
-                                    child: Text(
+                                  DataCell(
+                                    Text(
                                       score.totalPlayerWin.toString(),
                                       style: const TextStyle(fontSize: 16),
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          ],
+                                ],
+                              ),
+                            ],
+                          ),
                         );
                       }),
                     ),

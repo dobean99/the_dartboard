@@ -18,15 +18,14 @@ class DartBoard extends SpriteComponent
   Future<void> onLoad() async {
     sprite = await Sprite.load(PngAssets.dartBoard);
     anchor = Anchor.center;
-    throwTimes = 0;
   }
 
-  late int throwTimes;
+  late int throwTimes = 0;
   late Darts darts;
   late List<Darts> dartsArray = [];
   late List<int> scoreArray = [0, 0, 0];
   late bool isEnable = true;
-  int playerScore = 0;
+  int playerScore = 500;
   int computerScore = 500;
   int playerRounds = 0;
   int computerRounds = 0;
@@ -155,8 +154,8 @@ class DartBoard extends SpriteComponent
       score = 0;
     }
 
-    print(
-        " x:$dartX, y:$dartY, angle:$angle, Distance: $distance, Score: $score ");
+    // print(
+    //     " x:$dartX, y:$dartY, angle:$angle, Distance: $distance, Score: $score ");
 
     return score;
   }
@@ -165,10 +164,8 @@ class DartBoard extends SpriteComponent
   void onDragStart(DragStartEvent event) {
     super.onDragStart(event);
     if (isEnable) {
-      print("throwTimes : $throwTimes");
       darts = Darts(turn, throwTimes, position: event.canvasPosition);
       game.add(darts);
-      print(event.canvasPosition);
     }
   }
 
