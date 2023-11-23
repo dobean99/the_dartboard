@@ -52,7 +52,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
             //   );
             // },
             color: AppColors.whiteColor,
-            size: 200.0,
+            size: 100.0,
             duration: Duration(seconds: 1),
           ),
         ],

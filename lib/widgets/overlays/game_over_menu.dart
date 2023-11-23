@@ -100,9 +100,18 @@ class GameOverMenu extends StatelessWidget {
                           ),
                           DataCell(
                             Center(
-                              child: Text(
-                                game.playerScore.toString(),
-                                style: const TextStyle(fontSize: 16),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  Text(
+                                    game.playerScore.toString(),
+                                    style: const TextStyle(fontSize: 16),
+                                  ),
+                                  _checkWinner()
+                                      ? Image.asset(PngAssets.cupIcon)
+                                      : Container(),
+                                ],
                               ),
                             ),
                           ),
@@ -126,9 +135,18 @@ class GameOverMenu extends StatelessWidget {
                           ),
                           DataCell(
                             Center(
-                              child: Text(
-                                game.computerScore.toString(),
-                                style: const TextStyle(fontSize: 16),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  Text(
+                                    game.computerScore.toString(),
+                                    style: const TextStyle(fontSize: 16),
+                                  ),
+                                  _checkWinner()
+                                      ? Container()
+                                      : Image.asset(PngAssets.cupIcon),
+                                ],
                               ),
                             ),
                           ),

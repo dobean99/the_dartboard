@@ -18,21 +18,18 @@ class DartBoard extends SpriteComponent
   Future<void> onLoad() async {
     sprite = await Sprite.load(PngAssets.dartBoard);
     anchor = Anchor.center;
+    throwTimes = 0;
   }
 
-  @override
-  void render(Canvas canvas) {
-    super.render(canvas);
-    // paintDartBoard(canvas, Size.fromRadius(size.x / 2));
-  }
-
-  int throwTimes = 0;
+  late int throwTimes;
   late Darts darts;
   late List<Darts> dartsArray = [];
   late List<int> scoreArray = [0, 0, 0];
   late bool isEnable = true;
-  int playerScore = 500;
+  int playerScore = 0;
   int computerScore = 500;
+  int playerRounds = 0;
+  int computerRounds = 0;
 
   void paintDartBoard(Canvas canvas, Size size) {
     const outerColor = AppColors.blackColor;
@@ -168,6 +165,7 @@ class DartBoard extends SpriteComponent
   void onDragStart(DragStartEvent event) {
     super.onDragStart(event);
     if (isEnable) {
+      print("throwTimes : $throwTimes");
       darts = Darts(turn, throwTimes, position: event.canvasPosition);
       game.add(darts);
       print(event.canvasPosition);
@@ -200,7 +198,8 @@ class DartBoard extends SpriteComponent
           await Future.delayed(const Duration(seconds: 3));
           isEnable = true;
         }
-        throwTimes++;
+        playerRounds += 1;
+        throwTimes += 1;
       }
     }
   }
@@ -213,7 +212,7 @@ class DartBoard extends SpriteComponent
   }
 
   Future<void> computerPlay() async {
-    while (throwTimes <= 2) {
+    while (throwTimes <= 2 && turn == Turn.computerTurn) {
       double positionX =
           (Random().nextDouble() * size.x / 2) + (position.x - size.x / 4);
       double positionY =
@@ -225,7 +224,8 @@ class DartBoard extends SpriteComponent
       computerScore -= score;
       dartsArray.add(darts);
       await Future.delayed(const Duration(seconds: 3));
-      throwTimes++;
+      computerRounds += 1;
+      throwTimes += 1;
     }
   }
 
@@ -240,6 +240,7 @@ class DartBoard extends SpriteComponent
 
   resetGame() {
     playerScore = computerScore = 500;
+    playerRounds = computerRounds = 0;
     turn = Turn.playerTurn;
     isEnable = true;
     resetTurn();

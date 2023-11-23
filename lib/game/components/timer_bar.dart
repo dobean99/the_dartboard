@@ -47,22 +47,18 @@ class TimerBar extends PositionComponent {
     super.render(canvas);
   }
 
-  startTimer() {
-    timer.start();
-  }
-
   resetTimer() {
     countdown = 30;
     timer.reset();
     timer.start();
   }
 
-  stopTimer() {
-    timer.stop();
+  reset() {
+    countdown = 30;
+    timer.reset();
   }
 
   timerCountdown() {
-    // print('aaaaaaa');
     countdown -= 1;
     if (countdown <= 0) {
       timer.stop();

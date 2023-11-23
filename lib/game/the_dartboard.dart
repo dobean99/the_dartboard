@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
-import 'package:the_dartboard/config/assets/png_assets.dart';
 import 'package:the_dartboard/config/config.dart';
 import 'package:the_dartboard/widgets/overlays/game_over_menu.dart';
 import 'components/components.dart';
@@ -12,10 +11,9 @@ class TheDartboard extends FlameGame {
   late ScoreBoard computerScoreBoard;
   late TurnTextComponent turnTextComponent;
   late DartBoard dartboard;
-  late Turn turn;
+  late Turn currentTurn;
   late int playerScore;
   late int computerScore;
-  double countdown = 30;
   late Timer timer;
   late int playerRounds;
   late int computerRounds;
@@ -26,14 +24,13 @@ class TheDartboard extends FlameGame {
 
   init() {
     playerRounds = computerRounds = 0;
-    turn = Turn.playerTurn;
+    currentTurn = Turn.playerTurn;
     playerScore = computerScore = 500;
   }
 
   @override
   Future<void> onLoad() async {
     init();
-    print("Onload");
     _audioPlayerComponent = AudioPlayerComponent();
     timerBar = TimerBar(
       position: Vector2(size.x / 2 - 150, 10),
@@ -43,7 +40,7 @@ class TheDartboard extends FlameGame {
     SpriteComponent clock = SpriteComponent(
         sprite: clockIcon, position: Vector2(timerBar.position.x - 50, 10));
     turnTextComponent = TurnTextComponent(
-        turn: turn, position: Vector2(size.x / 2, timerBar.y + 30));
+        turn: currentTurn, position: Vector2(size.x / 2, timerBar.y + 30));
 
     playerScoreBoard = ScoreBoard(
       turn: Turn.playerTurn,
@@ -53,8 +50,8 @@ class TheDartboard extends FlameGame {
       turn: Turn.computerTurn,
       position: Vector2(size.x * 5 / 6, 150),
     );
-    dartboard =
-        DartBoard(position: Vector2(size.x / 2, size.y / 2 + 40), turn: turn);
+    dartboard = DartBoard(
+        position: Vector2(size.x / 2, size.y / 2 + 40), turn: currentTurn);
     addAll([
       _audioPlayerComponent,
       clock,
@@ -75,29 +72,31 @@ class TheDartboard extends FlameGame {
 
   @override
   void update(double dt) {
-    updateScore(turn);
     gameOver();
+    updateScore(currentTurn);
     nextTurn();
     super.update(dt);
   }
 
-  nextTurn() {
+  nextTurn() async {
     if (timerBar.countdown <= 0 || dartboard.throwTimes > 2) {
-      if (turn == Turn.playerTurn) {
+      if (currentTurn == Turn.playerTurn) {
         playerScoreBoard.reset();
-        turn = Turn.computerTurn;
-        dartboard.turn = turn;
+        currentTurn = Turn.computerTurn;
+        dartboard.turn = currentTurn;
         dartboard.resetTurn();
         dartboard.isEnable = false;
-        dartboard.computerPlay();
       } else {
         computerScoreBoard.reset();
-        turn = Turn.playerTurn;
-        dartboard.turn = turn;
+        currentTurn = Turn.playerTurn;
+        dartboard.turn = currentTurn;
         dartboard.resetTurn();
         dartboard.isEnable = true;
       }
-      turnTextComponent.turn = turn;
+      turnTextComponent.turn = currentTurn;
+      if (currentTurn == Turn.computerTurn) {
+        await dartboard.computerPlay();
+      }
       timerBar.resetTimer();
     }
   }
@@ -107,11 +106,19 @@ class TheDartboard extends FlameGame {
       playerScoreBoard.score = dartboard.scoreArray;
       playerScoreBoard.totalScore = dartboard.playerScore;
       playerScore = dartboard.playerScore;
+      if (dartboard.playerScore < 0) {
+        playerScoreBoard.totalScore = playerScore = 0;
+      }
     } else {
       computerScoreBoard.score = dartboard.scoreArray;
       computerScoreBoard.totalScore = dartboard.computerScore;
       computerScore = dartboard.computerScore;
+      if (dartboard.computerScore < 0) {
+        computerScoreBoard.totalScore = computerScore = 0;
+      }
     }
+    playerRounds = dartboard.playerRounds;
+    computerRounds = dartboard.computerRounds;
   }
 
   gameOver() {
@@ -122,12 +129,15 @@ class TheDartboard extends FlameGame {
   }
 
   void reset() {
-    turn = Turn.playerTurn;
-    turnTextComponent.turn = turn;
+    init();
+    turnTextComponent.turn = currentTurn;
     playerScoreBoard.resetGame();
     computerScoreBoard.resetGame();
     dartboard.resetGame();
-    timerBar.resetTimer();
+    children.whereType<Darts>().forEach((darts) {
+      darts.removeFromParent();
+    });
+    timerBar.reset();
   }
 
   @override
